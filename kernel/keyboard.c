@@ -41,21 +41,38 @@ static unsigned char ascii_map[128] =
     0,	/* All other keys are undefined */
 };
 
+bool SHIFT_MOD = 0;
+bool CTRL_MOD = 0;
+
+
+
 static void keyboard_callback(registers_t regs)
 {
 	// printf("tick: %d %d\n", (u8)inb(0x60), inb(KEYBOARD_STATUS_PORT));
+
 	int status = inb(KEYBOARD_STATUS_PORT);
 	char keycode = inb(KEYBOARD_DATA_PORT);
-	// printf("t: %d %d %d\n", status, status & 0x01, keycode);
+	// printf("t: %d %d %d %d\n", status, status & 0x01, keycode, keycode & 0x0F);
+	// printf("keycode: %d", keycode);
 	outb(0x20, 0x20);
-	if (keycode > -1)
-		putchar(ascii_map[keycode]);
+
+	if (keycode == 42 || keycode == -86) SHIFT_MOD = !SHIFT_MOD;
+	
+	else if (keycode > -1)
+	{
+		if (SHIFT_MOD) {
+			char c = ascii_map[keycode];
+			putchar(c - 32);
+		}
+		else
+			putchar(ascii_map[keycode]);
+	}
 }
 
 void init_keyboard()
 {
 	// outb(0x20, 0x11);
-	outb(0x21 , 0xFD);
+	// outb(0x21 , 0xFD);
    register_interrupt_handler(IRQ1, &keyboard_callback);
    // outb(0x43, 0x36);
 } 

@@ -3,6 +3,10 @@
 #include "stdlib.h"
 #include "stddef.h"
 
+
+
+#define BYTE unsigned char
+
 #define FB_COMMAND_PORT         0x3D4
 #define FB_DATA_PORT            0x3D5
 
@@ -14,7 +18,7 @@ void outb(u16int port, u8int value);
 u8int inb(u16int port);
 u16int inw(u16int port);
 void memcpy(void* dest, const u8int *src, u32int len);
-void memset(u8int *dest, u8int val, u32int len);
+void memset(void *dest, u8int val, u32int len);
 int strcmp(char *str1, char *str2);
 char *strcpy(char *dest, const char *src);
 char *strcat(char *dest, const char *src);
@@ -64,6 +68,7 @@ void putchar(char c);
 void write(const char* data, size_t size);
 void writestring(const char* data);
 void clear();
+void clear_line(u16 y);
+void clear_from(u16 x, u16 y);
 #define va_list __builtin_va_list
 void printf(const char* fmt, ...);
-

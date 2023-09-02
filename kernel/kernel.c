@@ -1,4 +1,3 @@
-// #include "stdio.h"
 #include "util.h"
 #include "descriptor_tables.h"
 
@@ -21,7 +20,6 @@ void kernel_main(struct mboot* mboot_ptr)
 	init_descriptor_tables();
 	initialize();
 	setcolor(13);
-
 	// writestring("Hello, kernel World!\n");
 	// clear();
 	// char s[300];
@@ -33,12 +31,13 @@ void kernel_main(struct mboot* mboot_ptr)
 	putchar('\n');
 	putchar('>');
 	asm volatile ("int $0x3");
-	putchar('\n');
+	// putchar('\n');
 
 	asm volatile("sti");
-	// init_timer(50); // Initialise timer to 50Hz 
+
+	init_timer(100); // Initialise timer to 50Hz
 	init_keyboard();
-	asm volatile("sti");
+	// asm volatile("sti");
 	// asm volatile ("int $0x3");
 	// asm volatile ("int $0x4"); 
 }
